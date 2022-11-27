@@ -88,7 +88,7 @@
 				</div>
 				<div class="col-md-7">
 					<div class="card-block">
-						<h2 class="card-title"><a href="post.html">{{p.title}}</a></h2>
+						<h2 class="card-title"><a href={% url 'detail' p.id %}>{{p.title}}</a></h2>
 						<h4 class="card-text">{{p.description|truncatewords:14 }} 
 							<br>
 							<a href='https://stackoverflow.com/questions/7826955/how-to-show-first-50-words-of-a-text-field-in-django-template'> Continue reading</a>
