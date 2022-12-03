@@ -8,6 +8,7 @@ urlpatterns = [
     path('author/', views.author,name='author'),
     path('post/', views.post,name='post'),
     path('detail/<int:id>/', views.detail_view,name='detail'),
+    path('create_post/', views.Create_post,name='create_post'),
     
  ]
 

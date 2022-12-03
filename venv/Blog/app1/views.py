@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from app1.models import Post
 from django.views.generic import DetailView,DeleteView,ListView,UpdateView
-
+from .forms import PostForm
 ''' using CBV '''
 # class PostListView(ListView):
 #     model =  Post
@@ -31,12 +31,20 @@ def detail_view(request, id):
     
 
 
-
-
+def Create_post(request):
+    template = 'create_post.html'
+    form = PostForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('index')
+    context = {"form": form}
+    return render(request, template, context)
 
 def author(request):
-    text = {"data":"jjfh"}
-    return render(request, 'author.html',context=text)
+    context = {}
+
+    context["dataset"] = Post.objects.all()
+    return render(request, 'author.html',context)
 
 
 
