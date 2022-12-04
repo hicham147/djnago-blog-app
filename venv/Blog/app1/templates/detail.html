@@ -16,6 +16,15 @@
 <!-- Custom styles for this template -->
 <link href={% static "css/mediumish.css"%} rel="stylesheet">
 </head>
+<style>
+	.center {
+		text-align: center;
+	  }
+	  .button:hover a {
+		padding-right: 25px;
+	  }
+	  
+</style>
 <body>
 
 <!-- Begin Nav
@@ -123,12 +132,19 @@
 </div>
 <!-- End Article
 ================================================== -->
-<div style="text-align:center ">
-	<button  type="button" class="btn btn-light">
-		<a href={% url 'index' %}> Back </a>
-	</button>
-</div>
 
+	<div class="center">
+		<span>
+				<button type="button" class="btn btn-danger">
+					<a style="color:white;"href = {% url 'delete_post' dataset.id %}> DELETE </a>
+				</button>
+			</span>
+		<span>
+			<button type="button" class="btn btn-Success">
+				<a  href = {% url 'update_post' dataset.id %}> UPDATE </a>
+			</button>
+		</span>
+	</div>
 
 <br>
 <br>

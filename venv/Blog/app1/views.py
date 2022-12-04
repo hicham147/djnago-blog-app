@@ -1,12 +1,17 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404,HttpResponseRedirect
 from app1.models import Post
 from django.views.generic import DetailView,DeleteView,ListView,UpdateView
-from .forms import PostForm
+from .forms import PostForm,UpdatePostForm
 ''' using CBV '''
 # class PostListView(ListView):
 #     model =  Post
 #     template_name = ' index.html'
-    
+  
+class Updatepost(UpdateView):
+    model = Post
+    form_class = UpdatePostForm
+    success_url ="/"
+    template_name = 'update_post.html'    
 
 
 
@@ -17,7 +22,7 @@ from .forms import PostForm
 def index(request):
     context = {}
 
-    context["dataset"] = Post.objects.all()
+    context["dataset"] = Post.objects.all().order_by('-id').values()
        
     return render(request, "index.html", context) 
 
@@ -28,8 +33,7 @@ def detail_view(request, id):
     context["dataset"] = Post.objects.get(id=id)
         
     return render (request, 'detail.html', context)
-    
-
+  
 
 def Create_post(request):
     template = 'create_post.html'
@@ -39,6 +43,21 @@ def Create_post(request):
         return redirect('index')
     context = {"form": form}
     return render(request, template, context)
+
+
+def delete_post(request, id):
+    template = "delete_post.html"
+    context = {}
+    context["dataset"] = Post.objects.get(id=id)
+    obj = get_object_or_404(Post, id=id)
+
+    if request.method == "POST":
+        obj.delete()
+        return HttpResponseRedirect("/")
+
+    return render(request, template, context)
+
+
 
 def author(request):
     context = {}

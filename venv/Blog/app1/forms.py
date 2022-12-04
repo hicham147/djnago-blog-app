@@ -11,3 +11,14 @@ class PostForm(forms.ModelForm):
             'author':forms.Select(attrs={'class':'form-control'}),
             'description':forms.Textarea(attrs={'class':'form-control'})
         }
+        
+
+
+class UpdatePostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'description')
+        widgets = {
+            'title':forms.TextInput(attrs={'class':'form-control',"placeholder":"Readonly Title here..."}),
+            'description':forms.Textarea(attrs={'class':'form-control'})
+        }
