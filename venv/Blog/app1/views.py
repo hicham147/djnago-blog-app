@@ -1,12 +1,20 @@
 from django.shortcuts import render,redirect,get_object_or_404,HttpResponseRedirect
 from app1.models import Post
-from django.views.generic import DetailView,DeleteView,ListView,UpdateView
-from .forms import PostForm,UpdatePostForm
+from django.views.generic import UpdateView
+from .forms import PostForm,UpdatePostForm,UserFormCreation
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate ,login,logout
+# login decerator
+from django.contrib.auth.decorators import login_required
+
+
 ''' using CBV '''
 # class PostListView(ListView):
 #     model =  Post
 #     template_name = ' index.html'
-  
+
+
+# update the post using class base views
 class Updatepost(UpdateView):
     model = Post
     form_class = UpdatePostForm
@@ -19,6 +27,8 @@ class Updatepost(UpdateView):
 
 
 ''' using FBV '''
+
+#  fuction of the home page 
 def index(request):
     context = {}
 
@@ -26,7 +36,35 @@ def index(request):
        
     return render(request, "index.html", context) 
 
+# fucn of register page
+def registerpage(request):
+    
+    if request.method == "POST":
+        form = UserFormCreation(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "user/login.html")
+            
+    else:
+        form = UserFormCreation()
+    context = {"form":form}
+    return render(request,'user/register.html',context)
 
+# fucn of logout page
+def loginpage(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request,username=username,password=password)
+        if user is not None:
+            login(request,user)
+            return redirect ("index")
+    context ={}  
+    return render(request,'user/login.html',context)
+
+
+# fucn that shows as the detail of the post
 def detail_view(request, id):
     context = {}
         
@@ -34,7 +72,9 @@ def detail_view(request, id):
         
     return render (request, 'detail.html', context)
   
-
+  
+@login_required(login_url='login')
+# use this fucn to create a new post
 def Create_post(request):
     template = 'create_post.html'
     form = PostForm(request.POST or None)
@@ -45,6 +85,8 @@ def Create_post(request):
     return render(request, template, context)
 
 
+@login_required(login_url='login')
+# use this fucn to delete a new post
 def delete_post(request, id):
     template = "delete_post.html"
     context = {}
@@ -58,7 +100,7 @@ def delete_post(request, id):
     return render(request, template, context)
 
 
-
+# author page
 def author(request):
     context = {}
 

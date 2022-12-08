@@ -11,6 +11,9 @@ urlpatterns = [
     path('create_post/', views.Create_post,name='create_post'),
     path('<int:pk>/update/', views.Updatepost.as_view(),name='update_post'),
     path('<int:id>/delete/', views.delete_post,name='delete_post'),
+    # user 
+    path('register/', views.registerpage,name='register'),
+     path('login/', views.loginpage,name='login'),
  ]
 
 
