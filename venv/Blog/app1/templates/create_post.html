@@ -34,7 +34,9 @@
     <div class="form-group">
         <form action="" method="post">
             {% csrf_token %}
+            {{ form.media }}
             {{ form.as_p }}
+            
             <input type="submit" class="btn btn-primary" name="" value="Add Post">
         </form>
     </div>

@@ -4,6 +4,7 @@ from django.views.generic import UpdateView
 from .forms import PostForm,UpdatePostForm,UserFormCreation
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate ,login,logout
+from django.urls import reverse
 # login decerator
 from django.contrib.auth.decorators import login_required
 
@@ -63,13 +64,15 @@ def loginpage(request):
     context ={}  
     return render(request,'user/login.html',context)
 
+def logoutuser(request):
+    logout(request)
+    return redirect('login')
 
 # fucn that shows as the detail of the post
 def detail_view(request, id):
     context = {}
-        
     context["dataset"] = Post.objects.get(id=id)
-        
+    
     return render (request, 'detail.html', context)
   
   
@@ -99,6 +102,17 @@ def delete_post(request, id):
 
     return render(request, template, context)
 
+
+# like post function
+@login_required(login_url='login')
+def like_post(request,pk):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    if post.like.filter(id=request.user.id).exists():
+        post.like.remove(request.user)
+    else:
+        post.like.add(request.user)
+
+    return HttpResponseRedirect(reverse('detail', args=[str(pk)]))
 
 # author page
 def author(request):

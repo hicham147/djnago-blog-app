@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="icon" href={% static "img/favicon.ico"%}>
+<link rel="icon" href={% static "img/icon.ico"%}>
 <title>Mediumish - A Medium style template by WowThemes.net</title>
 <!-- Bootstrap core CSS -->
 <link href={% static "css/bootstrap.min.css"%} rel="stylesheet">
@@ -25,23 +25,24 @@
 {% block content %}
 
 {% endblock %}
-
-<div class="container">
-    <div>
-        <h1>Delete The Post . .</h1>
-    </div>
-    <br>
-    <strong> Delete :{{dataset.title}} ?</strong>
-    <div class="form-group">
+{% if user.id == dataset.author.id %}
+    <div class="container">
+        <div>
+            <h1>Delete The Post . .</h1>
+        </div>
         <br>
-        <form action="" method="post">
-            {% csrf_token %}
+        <strong> Delete :{{dataset.title}} ?</strong>
+        <div class="form-group">
+            <br>
+            <form action="" method="post">
+                {% csrf_token %}
 
-            <input type="submit" class="btn btn-danger" name="" value="Delete">
-            <input type="submit" href= {%url 'index' %} class="btn btn-primary" name="No" value="no">
-        </form>
+                <input type="submit" class="btn btn-danger" name="" value="Delete">
+                <input type="submit" href= {%url 'index' %} class="btn btn-primary" name="No" value="no">
+            </form>
+        </div>
     </div>
-</div>
+{%endif%}
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->

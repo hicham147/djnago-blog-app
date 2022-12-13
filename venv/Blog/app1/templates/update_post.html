@@ -9,7 +9,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href={% static "img/favicon.ico"%}>
-<title>Mediumish - A Medium style template by WowThemes.net</title>
+<title>Django-Blog</title>
 <!-- Bootstrap core CSS -->
 <link href={% static "css/bootstrap.min.css"%} rel="stylesheet">
 <!-- Fonts -->
@@ -18,6 +18,11 @@
 <!-- Custom styles for this template -->
 <link href={% static "css/mediumish.css"%} rel="stylesheet">
 </head>
+<style>
+    #alert-1{
+        margin-top:50px;
+    }
+</style>
 <body>
 
 <!-- Begin Nav
@@ -25,20 +30,34 @@
 {% block content %}
 
 {% endblock %}
+{%if user.is_authenticated %}
+    {% if user.id == dataset.author.id %}
+        <div class="container">
+            <div>
+                <h1>Update The Post</h1>
+            </div>
+            <br>
+            <div class="form-group">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    {{ form.media }}
 
+                    <input type="submit" class="btn btn-primary" name="" value="Update Post">
+                </form>
+            </div>
+        </div>
+    {%endif %}
+{%else %}
 <div class="container">
-    <div>
-        <h1>Update The Post</h1>
-    </div>
-    <br>
-    <div class="form-group">
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" class="btn btn-primary" name="" value="Update Post">
-        </form>
+    <div id = "alert-1" class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>sorry!</strong> You need to Login First .
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 </div>
+{% endif %}
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->

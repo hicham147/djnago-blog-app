@@ -2,6 +2,9 @@ from django import forms
 from .models import Post
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from tinymce.models import HTMLField
+
+
 # use this form to add new post and using the widgets
 class PostForm(forms.ModelForm):
     class Meta:
