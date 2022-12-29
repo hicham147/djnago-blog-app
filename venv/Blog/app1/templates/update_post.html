@@ -31,7 +31,6 @@
 
 {% endblock %}
 {%if user.is_authenticated %}
-    {% if user.id == dataset.author.id %}
         <div class="container">
             <div>
                 <h1>Update The Post</h1>
@@ -47,7 +46,7 @@
                 </form>
             </div>
         </div>
-    {%endif %}
+    
 {%else %}
 <div class="container">
     <div id = "alert-1" class="alert alert-warning alert-dismissible fade show" role="alert">

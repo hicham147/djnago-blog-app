@@ -89,8 +89,8 @@
 						<a href="#comments">
 							{{dataset.like.all.count}}<br/>
 							</a>
-						{% if post_is_liked %}
-						<button type="submit" name="post_id" value="{{dataset.id}}" class="btn btn-info">Unlike</button>
+						{% if liked %}
+						<button type="submit" name="post_id" value="{{dataset.id}}" class="btn btn-danger">Unlike</button>
 						{% else %}
 						<button type="submit" name="post_id" value="{{dataset.id}}" class="btn btn-info">Like</button>
 						{% endif %}

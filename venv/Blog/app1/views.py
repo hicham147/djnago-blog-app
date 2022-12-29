@@ -80,7 +80,7 @@ def detail_view(request, id):
 # use this fucn to create a new post
 def Create_post(request):
     template = 'create_post.html'
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None)  #Postform from Form.py
     if form.is_valid():
         form.save()
         return redirect('index')
@@ -108,13 +108,14 @@ def delete_post(request, id):
 def like_post(request,pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     if post.like.filter(id=request.user.id).exists():
-        post.like.remove(request.user)
+        post.like.remove(request.user)        
     else:
         post.like.add(request.user)
 
     return HttpResponseRedirect(reverse('detail', args=[str(pk)]))
 
 # author page
+@login_required(login_url='login')
 def author(request):
     context = {}
 

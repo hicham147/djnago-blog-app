@@ -58,9 +58,11 @@
                 <li class="nav-item">
                 <a class="nav-link" href={%url 'post' %}>Post</a>
                 </li>
+                {%if user.is_authenticated%}
                 <li class="nav-item">
                 <a class="nav-link" href={%url 'author' %}>Profile</a>
                 </li>
+                {%endif%}
             </ul>
             <!-- End Menu -->
             <!-- Begin Search -->

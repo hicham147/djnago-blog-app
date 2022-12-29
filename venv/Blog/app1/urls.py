@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
+
 ''' using FBV '''
 
 urlpatterns = [
@@ -17,7 +18,8 @@ urlpatterns = [
     path('register/', views.registerpage,name='register'),
     path('login/', views.loginpage,name='login'),
     path('logout/', views.logoutuser,name='logout'),
- ]
+ ] 
+
 
 
 # from .views import PostListView
