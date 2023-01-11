@@ -1,10 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404,HttpResponseRedirect
-from app1.models import Post
-from django.views.generic import UpdateView
-from .forms import PostForm,UpdatePostForm,UserFormCreation
+from app1.models import Post,Profile,Comment
+from django.views.generic import UpdateView,CreateView
+from .forms import PostForm,UpdatePostForm,UserFormCreation,ProfileFormUpdate,UserUpdateForm,CommentForm,PostimageForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate ,login,logout
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 # login decerator
 from django.contrib.auth.decorators import login_required
 
@@ -20,8 +20,10 @@ class Updatepost(UpdateView):
     model = Post
     form_class = UpdatePostForm
     success_url ="/"
-    template_name = 'update_post.html'    
+    template_name = 'update_post.html'  
+    
 
+    
 
 
 
@@ -70,22 +72,25 @@ def logoutuser(request):
 
 # fucn that shows as the detail of the post
 def detail_view(request, id):
-    context = {}
-    context["dataset"] = Post.objects.get(id=id)
+    dataset = Post.objects.get(id=id)
     
-    return render (request, 'detail.html', context)
+    return render (request, 'detail.html', {"dataset":dataset})
   
   
 @login_required(login_url='login')
 # use this fucn to create a new post
 def Create_post(request):
-    template = 'create_post.html'
-    form = PostForm(request.POST or None)  #Postform from Form.py
-    if form.is_valid():
-        form.save()
-        return redirect('index')
-    context = {"form": form}
-    return render(request, template, context)
+    img_f = PostimageForm(request.POST,request.FILES)
+    form = PostForm(request.POST,request.FILES,)  # Postform from Form.py
+    if request.method == 'POST':
+        
+        if form.is_valid() and img_f.is_valid():
+            form.save()
+            img_f.save()
+            return redirect('index')
+    context = {"form": form,
+               "img_f":img_f}
+    return render(request, 'create_post.html', context)
 
 
 @login_required(login_url='login')
@@ -116,11 +121,23 @@ def like_post(request,pk):
 
 # author page
 @login_required(login_url='login')
-def author(request):
-    context = {}
-
-    context["dataset"] = Post.objects.all()
-    return render(request, 'author.html',context)
+def profile(request):
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST,instance=request.user)
+        prof_from = ProfileFormUpdate(request.POST,request.FILES,instance=request.user.profile)
+        if user_form.is_valid() and prof_from.is_valid():
+            user_form.save()
+            prof_from.save()
+            return redirect('profile')
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+        prof_from = ProfileFormUpdate(instance=request.user.profile)
+    context = {
+        'user_form':user_form,
+        'prof_from':prof_from,
+    }
+    
+    return render(request, 'profile.html',context)
 
 
 

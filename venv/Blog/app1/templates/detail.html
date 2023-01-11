@@ -106,7 +106,7 @@
 		<div class="col-md-8 col-md-offset-2 col-xs-12">
 			<div class="mainheading">
 
-				<h1 class="posttitle">{{dataset.title}}</h1>
+				<h1 class="posttitle">{{dataset.title}}</h1><p>By ..... {{dataset.author}}</p>
 
 			</div>
 
@@ -129,7 +129,7 @@
 </div>
 <!-- End Article
 ================================================== -->
-{% if user.id == dataset.author.id %}
+
 	<div class="center">
 		<h3></h3>
 		<h3></h3>
@@ -143,9 +143,42 @@
 				<a  href = {% url 'update_post' dataset.id %}> UPDATE </a>
 			</button>
 		</span>
+		
 	</div>
-{% endif %}
+	<br>
+	<div class="container" style="margin-right: 5px">
+		<h2 style="color:gray">Add Comments .. !</h2>
+		
+		{%if not dataset.comments.all %}
+		<hr>
+		<h5>No comments yet ... !</h5>
+		<a > Add New One </>
+		{%else %}
+		{%for comment in dataset.comments.all %}
+				<br>
+				<strong>{{comment.author}}</strong>
+				
+				<span class=" text-muted font-weight-normal"> {{comment.date_add}}	</span>
+				<br>
+				<blockquote>
+				{{comment.content}}
+				</blockquote>
+				<br>
+		{%endfor%}
+		<a> Add New One </>
+			<form method="post">
+				{{ comment_form.as_p }}
+				{% csrf_token %}
+				<p><input type="submit" value="Add comment"></p>
+			</form>	
+		{%endif %}
+
+	</div>
+	
 <br>
+
+
+
 <br>
 <br>
 <br>

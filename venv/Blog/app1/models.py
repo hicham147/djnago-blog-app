@@ -8,6 +8,7 @@ from django.dispatch import receiver
 class Post(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
+    image = models.ImageField()
     description = RichTextField(blank=True,null=True)
     date_posted = models.DateField(auto_now_add=True)
     like = models.ManyToManyField(User,related_name="post_like")
@@ -32,5 +33,15 @@ class Profile(models.Model):
 def create_profile(sender,**kwargs):
     if kwargs['created']:
         Profile.objects.create(user=kwargs['instance'])
+        
 
 post_save.connect(create_profile,sender=User)
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post,related_name='comments',on_delete=models.CASCADE)
+    content = models.TextField()
+    date_add = models.DateTimeField(auto_now_add=True)
+    # author = models.ForeignKey(User,on_delete=models.CASCADE)
+    def __str__(self):
+        return f'{self.post.title} comments'
